@@ -1,3 +1,5 @@
+// RESPONSABILIDAD DE INICIAR LA APLICACION
+// RESIBE EL SERVIDOR Y LO PONE A ESCUCHAR EN EL PUERTO X
 //                       _oo0oo_
 //                      o8888888o
 //                      88" . "88
@@ -17,12 +19,15 @@
 //     =====`-.____`.___ \_____/___.-`___.-'=====
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const server = require('./src/app.js');
-const { conn } = require('./src/db.js');
+const server = require("./src/app.js");
+const { conn } = require("./src/db.js");
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
+// ! CUANDO TERMINE CON LA BASE DE DATOS CAMBIAR A ALTER
+// poner force para borrar todo
+// poner alter para que se guarde la data
+conn.sync({ alter: true }).then(() => {
   server.listen(3001, () => {
-    console.log('%s listening at 3001'); // eslint-disable-line no-console
+    console.log("%s listening at 3001"); // eslint-disable-line no-console
   });
 });
