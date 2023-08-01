@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 
 const Card = (props) => {
   return (
-    <Link to={`/detail/${props.id}`}>
-      <div className={styles.card}>
-        <div>Name:{props.name}</div>
+    <div className={styles.card}>
+      <h2>{props.name}</h2>
+      <Link to={`/detail/${props.id}`}>
         <img className={styles.imagen} src={props.image} alt="imagen"></img>
-        <div>Temperaments: {props.Temperaments}</div>
-        <div>Max Weight: {props.maxPeso}kg</div>
-        <div>Min Weight: {props.minPeso}kg</div>
-      </div>
-    </Link>
+      </Link>
+      <h4>{props.Temperaments}</h4>
+      <h3>
+        {props.minPeso}Kg - {props.maxPeso}Kg
+      </h3>
+    </div>
   );
 };
 

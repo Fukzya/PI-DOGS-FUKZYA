@@ -51,6 +51,7 @@ export const postDog = ({
 }) => {
   return async function (dispatch) {
     try {
+      console.log(temperaments);
       const response = await axios.post("http://localhost:3001/dogs", {
         name,
         max_height,
@@ -58,27 +59,13 @@ export const postDog = ({
         max_weight,
         min_weight,
         life_span,
-        temperaments,
         image,
+        temperaments,
       });
       dispatch({ type: "POST_DOG", payload: response.data });
       return response;
     } catch (error) {
       alert(error.response.data.error);
     }
-  };
-};
-
-export const filterDogsByTemperaments = (payload) => {
-  return {
-    type: "FILTER_BY_TEMP",
-    payload,
-  };
-};
-
-export const filterDogsByOrigin = (payload) => {
-  return {
-    type: "FILTER_BY_ORG",
-    payload,
   };
 };

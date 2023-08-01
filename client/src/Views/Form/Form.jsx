@@ -1,5 +1,4 @@
 import Style from "./Form.module.css";
-//import ok from "../../assets/icon/ok.png";
 import validate from "./Validations";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,20 +20,25 @@ const Form = () => {
     max_weight: "",
     min_weight: "",
     life_span: "",
-    temperament: [],
+    temperaments: [],
     image: "",
   });
 
-  const [errors, setErrors] = useState({
-    name: "",
-    max_height: "",
-    min_height: "",
-    max_weight: "",
-    min_weight: "",
-    life_span: "",
-    temperament: [],
-    image: "",
-  });
+  const handleDelete = (id) => {
+    setForm({
+      ...form,
+      temperaments: form.temperaments.filter((temp) => temp !== id),
+    });
+    console.log();
+  };
+
+  const [errors, setErrors] = useState({});
+  const isSubmitDisabled =
+    Object.values(errors).some((error) => error !== "") ||
+    Object.values(form).some(
+      (value) => value === "" || form.temperaments.length === 0
+    );
+  console.log(form);
 
   const changeHandler = (event) => {
     const property = event.target.name;
@@ -42,11 +46,10 @@ const Form = () => {
     setForm({ ...form, [property]: value });
     setErrors(validate({ ...form, [property]: value }));
   };
-
   const changeSelectHandler = (event) => {
-    const value = event.target.value;
-    if (!form.temperament.includes(value)) {
-      setForm({ ...form, temperament: [...form.temperament, value] });
+    const value = Number(event.target.value);
+    if (!form.temperaments.includes(value)) {
+      setForm({ ...form, temperaments: [...form.temperaments, value] });
     }
   };
 
@@ -63,194 +66,168 @@ const Form = () => {
         max_weight: "",
         min_weight: "",
         lifeYears: "",
-        temperament: [],
+        temperaments: [],
         image: "",
       });
     } else {
       alert("Errors exist");
     }
   };
-
+  const getTemperamentName = (id) => {
+    let temperament = allTemperaments.filter((temp) => temp.Id == id);
+    return temperament[0].Nombre;
+  };
   return (
-    <form onSubmit={SubmitHandler}>
-      <h1>Create your breed dog</h1>
-      <div className={Style.divInput}>
-        <div className={Style.containerDiv}>
-          <label htmlFor="name">Name: </label>
-          <input
-            type="text"
-            name="name"
-            className={Style.input}
-            value={form.name}
-            onChange={changeHandler}
-          />
-          {/* {!errors.name && (
-              <img src={ok} alt="ok" className={Style.imageInput} />
-            )} */}
-        </div>
-        {errors.name && <span className={Style.spanError}>{errors.name}</span>}
-      </div>
-      <div className={Style.divInput}>
-        <div className={Style.containerDiv}>
-          <label htmlFor="max_height">Max-height: </label>
-          <input
-            type="text"
-            name="max_height"
-            className={Style.input}
-            value={form.max_height}
-            onChange={changeHandler}
-          />
-          {/* {!errors.max_height && (
-              <img src={ok} alt="ok" className={Style.imageInput} />
-            )} */}
-        </div>
-        {errors.max_height && (
-          <span className={Style.spanError}>{errors.max_height}</span>
-        )}
-      </div>
-      <div className={Style.divInput}>
-        <div className={Style.containerDiv}>
-          <label htmlFor="min_height">Min-height: </label>
-          <input
-            type="text"
-            name="min_height"
-            className={Style.input}
-            value={form.min_height}
-            onChange={changeHandler}
-          />
-          {/* {!errors.min_height && (
-              <img src={ok} alt="ok" className={Style.imageInput} />
-            )} */}
-        </div>
-        {errors.min_height && (
-          <span className={Style.spanError}>{errors.min_height}</span>
-        )}
-      </div>
-      <div className={Style.divInput}>
-        <div className={Style.containerDiv}>
-          <label htmlFor="max_weight">Max-weight: </label>
-          <input
-            type="text"
-            name="max_weight"
-            className={Style.input}
-            value={form.max_weight}
-            onChange={changeHandler}
-          />
-          {/* {!errors.max_weight && (
-              <img src={ok} alt="ok" className={Style.imageInput} />
-            )} */}
-        </div>
-        {errors.max_weight && (
-          <span className={Style.spanError}>{errors.max_weight}</span>
-        )}
-      </div>
-      <div className={Style.divInput}>
-        <div className={Style.containerDiv}>
-          <label htmlFor="min_weight">Min-weight: </label>
-          <input
-            type="text"
-            name="min_weight"
-            className={Style.input}
-            value={form.min_weight}
-            onChange={changeHandler}
-          />
-          {/* {!errors.min_weight && (
-              <img src={ok} alt="ok" className={Style.imageInput} />
-            )} */}
-        </div>
-        {errors.min_weight && (
-          <span className={Style.spanError}>{errors.min_weight}</span>
-        )}
-      </div>
-      <div className={Style.divInput}>
-        <div className={Style.containerDiv}>
-          <label htmlFor="life_span">Life Span: </label>
-          <input
-            type="text"
-            name="life_span"
-            className={Style.input}
-            value={form.life_span}
-            onChange={changeHandler}
-          />
-          {/* {!errors.life_span && (
-              <img src={ok} alt="ok" className={Style.imageInput} />
-            )} */}
-        </div>
-        {errors.life_span && (
-          <span className={Style.spanError}>{errors.life_span}</span>
-        )}
-      </div>
-      {
+    <div>
+      <form onSubmit={SubmitHandler}>
+        <h1>Create your breed dog</h1>
         <div className={Style.divInput}>
           <div className={Style.containerDiv}>
-            <label htmlFor="temperaments">Temperaments: </label>
-            <select
-              name="temperaments"
-              onChange={changeSelectHandler}
-              className={Style.temperamentSalected}
-            >
-              {allTemperaments ? (
-                allTemperaments.map((element) => {
-                  return (
-                    <option value={element.Nombre} key={element.id}>
-                      {element.Nombre}
-                    </option>
-                  );
-                })
-              ) : (
-                <h1>...Loading</h1>
-              )}
-            </select>
+            <label htmlFor="name">Name: </label>
+            <input
+              type="text"
+              name="name"
+              className={Style.input}
+              value={form.name}
+              onChange={changeHandler}
+            />
           </div>
-          <span className={Style.spanError}>{errors.temperament}</span>
+          {errors.name && (
+            <span className={Style.spanError}>{errors.name}</span>
+          )}
         </div>
-      }
-      <div className={Style.divInput}>
-        <div className={Style.containerDiv}>
-          <label htmlFor="image">Image: </label>
-          <input
-            type="text"
-            name="image"
-            className={Style.input}
-            value={form.image}
-            onChange={changeHandler}
-            placeholder="Ingresar URL"
-          />
-          {/* {!errors.image && (
-              <img src={ok} alt="ok" className={Style.imageInput} />
-            )} */}
+        <div className={Style.divInput}>
+          <div className={Style.containerDiv}>
+            <label htmlFor="max_height">Max-height: </label>
+            <input
+              type="text"
+              name="max_height"
+              className={Style.input}
+              value={form.max_height}
+              onChange={changeHandler}
+            />
+          </div>
+          {errors.max_height && (
+            <span className={Style.spanError}>{errors.max_height}</span>
+          )}
         </div>
-        {errors.image && (
-          <span className={Style.spanError}>{errors.image}</span>
+        <div className={Style.divInput}>
+          <div className={Style.containerDiv}>
+            <label htmlFor="min_height">Min-height: </label>
+            <input
+              type="text"
+              name="min_height"
+              className={Style.input}
+              value={form.min_height}
+              onChange={changeHandler}
+            />
+          </div>
+          {errors.min_height && (
+            <span className={Style.spanError}>{errors.min_height}</span>
+          )}
+        </div>
+        <div className={Style.divInput}>
+          <div className={Style.containerDiv}>
+            <label htmlFor="max_weight">Max-weight: </label>
+            <input
+              type="text"
+              name="max_weight"
+              className={Style.input}
+              value={form.max_weight}
+              onChange={changeHandler}
+            />
+          </div>
+          {errors.max_weight && (
+            <span className={Style.spanError}>{errors.max_weight}</span>
+          )}
+        </div>
+        <div className={Style.divInput}>
+          <div className={Style.containerDiv}>
+            <label htmlFor="min_weight">Min-weight: </label>
+            <input
+              type="text"
+              name="min_weight"
+              className={Style.input}
+              value={form.min_weight}
+              onChange={changeHandler}
+            />
+          </div>
+          {errors.min_weight && (
+            <span className={Style.spanError}>{errors.min_weight}</span>
+          )}
+        </div>
+        <div className={Style.divInput}>
+          <div className={Style.containerDiv}>
+            <label htmlFor="life_span">Life Span: </label>
+            <input
+              type="text"
+              name="life_span"
+              className={Style.input}
+              value={form.life_span}
+              onChange={changeHandler}
+            />
+          </div>
+          {errors.life_span && (
+            <span className={Style.spanError}>{errors.life_span}</span>
+          )}
+        </div>
+        {
+          <div className={Style.divInput}>
+            <div className={Style.containerDiv}>
+              <label htmlFor="temperaments">Temperaments: </label>
+              <select
+                name="temperaments"
+                onChange={changeSelectHandler}
+                className={Style.temperamentSalected}
+              >
+                {allTemperaments.map((temp) => (
+                  <option value={temp.Id} key={temp.Id}>
+                    {temp.Nombre}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <span>{errors.temperaments}</span>
+          </div>
+        }
+        <div className={Style.divInput}>
+          <div className={Style.containerDiv}>
+            <label htmlFor="image">Image: </label>
+            <input
+              type="text"
+              name="image"
+              className={Style.input}
+              value={form.image}
+              onChange={changeHandler}
+              placeholder="Ingresar URL"
+            />
+          </div>
+          {errors.image && (
+            <span className={Style.spanError}>{errors.image}</span>
+          )}
+        </div>
+        <div></div>
+        {JSON.stringify(form.temperaments) === JSON.stringify([]) &&
+        !form.image ? (
+          <div className={Style.containerTemperamentsNone}></div>
+        ) : (
+          <div>
+            <img src={form.image} alt={form.name} />
+          </div>
         )}
-      </div>
-      <div></div>
-      {JSON.stringify(form.temperament) === JSON.stringify([]) &&
-      !form.image ? (
-        <div className={Style.containerTemperamentsNone}></div>
-      ) : (
-        <div className={Style.containerTemperaments}>
-          <img src={form.image} alt={form.name} className={Style.imgRender} />
-          <h2 className={Style.titleTemperament}>Temperaments</h2>
-          {form.temperament.map((element) => {
-            return <p className={Style.temperaments}>{element}</p>;
-          })}
-        </div>
-      )}
 
-      {errors.name ||
-      errors.max_height ||
-      errors.min_height ||
-      errors.max_weight ||
-      errors.min_weight ||
-      errors.life_span ? (
-        <h1 className={Style.errorMessage}>Please correct any errors</h1>
-      ) : (
-        <div className={Style.containerButtons}>
-          <button className={Style.button}>Submit</button>
-        </div>
-      )}
-    </form>
+        <button disabled={isSubmitDisabled}>Submit</button>
+      </form>
+      <h2>Temperaments</h2>
+      {form.temperaments.map((element) => {
+        return (
+          <div>
+            <p>{getTemperamentName(element)}</p>
+            <button onClick={() => handleDelete(element)}>X</button>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 

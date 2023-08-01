@@ -69,22 +69,19 @@ const validate = (dogData) => {
     if (!dogData.life_span)
       errors.life_span = "The life years of the dog cannot be null";
   }
-  if (dogData.temperament) {
-    if (dogData.temperament.length < 0)
-      errors.temperament = "The temperaments of the dog cannot be null";
+  if (dogData.temperaments) {
+    if (dogData.temperaments.length === 0) errors.temperaments = "";
+    else {
+      errors.temperaments = "";
+    }
   }
 
-  if (dogData.image) {
-    // eslint-disable-next-line
-    if (
-      !/^(https?:\/\/)?([\da-z-]+)\.([a-z]{2,6})([\w -]*)*\/?$/.test(
-        dogData.image
-      )
-    )
-      errors.image = "The entered URL is not correct";
-    else if (!/.(gif|jpeg|jpg|png)$/i.test(dogData.image))
-      errors.image = "Supported extensions: JPEG, JPG and PNG";
-    else errors.image = "";
+  if (!dogData.image) {
+    errors.image = "Image URL cannot be empty";
+  } else if (!/^https?:\/\/\S+$/.test(dogData.image)) {
+    errors.image = "Invalid image URL";
+  } else if (dogData.image.length > 300) {
+    errors.image = "Image URL cannot exceed 300 characters";
   }
 
   return errors;
