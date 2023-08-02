@@ -3,6 +3,7 @@ const { getDogbyId } = require("../Controllers/DogsControllers/getDogbyId");
 const { postDog } = require("../Controllers/DogsControllers/postDog");
 const { getDogbyName } = require("../Controllers/DogsControllers/getDogbyName");
 const { delDogById } = require("../Controllers/DogsControllers/delDogbyId");
+const { updatedDog } = require("../Controllers/DogsControllers/updateDog");
 
 const getAllDogsHandler = async (req, res) => {
   const { name } = req.query;
@@ -26,9 +27,37 @@ const getDogbyIdHandler = async (req, res) => {
 const delDogbyIdHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    // Assuming getDogbyId is a function that retrieves the dog by its ID and deletes it
-    const deletedDog = await delDogById(id);
+    console.log(id);
+    const deletedDog = await delDogById(id).data;
     res.status(200).send(deletedDog);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+const updateDogHandler = async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    max_height,
+    min_height,
+    max_weight,
+    min_weight,
+    life_span,
+    image,
+  } = req.body;
+  try {
+    const response = await updatedDog({
+      id,
+      name,
+      max_height,
+      min_height,
+      max_weight,
+      min_weight,
+      life_span,
+      image,
+    });
+    res.status(200).json(response);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -60,4 +89,5 @@ module.exports = {
   getDogbyIdHandler,
   postDogHandler,
   delDogbyIdHandler,
+  updateDogHandler,
 };

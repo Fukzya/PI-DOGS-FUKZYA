@@ -1,12 +1,14 @@
 const initialState = {
   dogs: [],
-  dogId: [],
+  dogId: {},
   temperaments: [],
   alldogs: [],
+  detailDog: {},
   pagination: {
     thisPage: 1,
     itemsPerPage: 8,
   },
+  res: {},
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -23,6 +25,14 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, temperaments: action.payload };
     case "FIND_DOG_BY_NAME":
       return { ...state, dogs: action.payload };
+    case "GET_DETAIL_DOG":
+      return { ...state, detailDog: action.payload };
+    case "CLEAN_CARD_DETAIL":
+      return { ...state, detailDog: {} };
+    case "PUT_DOG":
+      return { ...state };
+    case "DELETE_DOG":
+      return { ...state, res: action.payload };
     case "SET_PAGE":
       return {
         ...state,

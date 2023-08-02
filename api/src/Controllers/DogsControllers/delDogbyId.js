@@ -10,7 +10,7 @@ const delDogById = async (id) => {
     throw new Error("Dog not found");
   }
   await dog.destroy();
-  return "Todo salio bien";
+  return "Dog deleted successfully";
 };
 
 module.exports = { delDogById };

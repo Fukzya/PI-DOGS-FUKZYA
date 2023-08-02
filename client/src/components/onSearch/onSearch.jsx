@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { findDogByName } from "../../redux/actions";
+import style from "./onSearch.module.css";
 
 export default function SearchBar() {
   const dispatch = useDispatch();
@@ -17,14 +18,14 @@ export default function SearchBar() {
   };
 
   return (
-    <div>
+    <div className={style.shCont}>
       <input
         type="search"
         placeholder="Search..."
         value={dog}
         onChange={handleChange}
       />
-      <button onClick={() => handleSubmit()}>aaaa</button>
+      <button onClick={() => handleSubmit()}>🔎</button>
     </div>
   );
 }

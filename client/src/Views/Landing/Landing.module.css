@@ -4,7 +4,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-image: url("C:/Users/santi/OneDrive/Escritorio/PI-Dogs-main/client/src/components/IMG/1301534.jpg");
+  background-image: url("../../IMG/1301534.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -41,9 +41,9 @@
 .buttonLanding {
   padding: 18px 80px;
   border: none;
-  font-size: 16px;
+  font-size: 32px;
   border-radius: 50px;
-  font-family: Georgia;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   background: linear-gradient(to right, rgb(250, 175, 105), rgb(255, 115, 0));
   color: rgb(0, 0, 0);
   cursor: pointer;

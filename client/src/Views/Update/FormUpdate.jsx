@@ -1,17 +1,52 @@
-import Style from "./Form.module.css";
+import Style from "./FormUpdate.module.css";
 import validate from "./Validations";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getTemperaments, postDog, getDogs } from "../../redux/actions.js";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import {
+  getDogs,
+  getDetailDog,
+  cleanCardDetail,
+  putDog,
+} from "../../redux/actions.js";
 
-const Form = () => {
+const FormUpdate = () => {
+  const { id } = useParams();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getTemperaments());
-  }, [dispatch]);
+    dispatch(getDetailDog(id));
+    return () => {
+      dispatch(cleanCardDetail());
+    };
+  }, [id, dispatch]);
 
-  const allTemperaments = useSelector((state) => state.temperaments);
+  const dog = useSelector((state) => state.detailDog);
+  useEffect(() => {
+    if (dog) {
+      setForm({
+        name: dog.name,
+        max_height: dog.max_height,
+        min_height: dog.min_height,
+        max_weight: dog.max_weight,
+        min_weight: dog.min_weight,
+        life_span: dog.life_span,
+        image: dog.image,
+      });
+    }
+    return () => {
+      setForm({
+        name: "",
+        max_height: "",
+        min_height: "",
+        max_weight: "",
+        min_weight: "",
+        life_span: "",
+        image: "",
+      });
+    };
+  }, [dog]);
 
   const [form, setForm] = useState({
     name: "",
@@ -20,25 +55,14 @@ const Form = () => {
     max_weight: "",
     min_weight: "",
     life_span: "",
-    temperaments: [],
     image: "",
   });
 
-  const handleDelete = (id) => {
-    setForm({
-      ...form,
-      temperaments: form.temperaments.filter((temp) => temp !== id),
-    });
-    console.log();
-  };
-
   const [errors, setErrors] = useState({});
+
   const isSubmitDisabled =
     Object.values(errors).some((error) => error !== "") ||
-    Object.values(form).some(
-      (value) => value === "" || form.temperaments.length === 0
-    );
-  console.log(form);
+    Object.values(form).some((value) => value === "");
 
   const changeHandler = (event) => {
     const property = event.target.name;
@@ -46,41 +70,19 @@ const Form = () => {
     setForm({ ...form, [property]: value });
     setErrors(validate({ ...form, [property]: value }));
   };
-  const changeSelectHandler = (event) => {
-    const value = Number(event.target.value);
-    if (!form.temperaments.includes(value)) {
-      setForm({ ...form, temperaments: [...form.temperaments, value] });
-    }
-  };
 
   const SubmitHandler = (event) => {
     event.preventDefault();
-    if (!errors.name) {
-      dispatch(postDog(form));
-      alert("the dog breed was created successfully");
-      dispatch(getDogs());
-      setForm({
-        name: "",
-        max_height: "",
-        min_height: "",
-        max_weight: "",
-        min_weight: "",
-        lifeYears: "",
-        temperaments: [],
-        image: "",
-      });
-    } else {
-      alert("Errors exist");
-    }
+    console.log(form);
+    dispatch(putDog(id, form));
+    alert("the dog breed was updated successfully");
+    dispatch(getDogs());
   };
-  const getTemperamentName = (id) => {
-    let temperament = allTemperaments.filter((temp) => temp.Id === id);
-    return temperament[0].Nombre;
-  };
+
   return (
     <div>
       <form onSubmit={SubmitHandler}>
-        <h1>Create your breed dog</h1>
+        <h1>Update your breed dog</h1>
         <div className={Style.divInput}>
           <div className={Style.containerDiv}>
             <label htmlFor="name">Name: </label>
@@ -171,25 +173,6 @@ const Form = () => {
             <span className={Style.spanError}>{errors.life_span}</span>
           )}
         </div>
-        {
-          <div className={Style.divInput}>
-            <div className={Style.containerDiv}>
-              <label htmlFor="temperaments">Temperaments: </label>
-              <select
-                name="temperaments"
-                onChange={changeSelectHandler}
-                className={Style.temperamentSalected}
-              >
-                {allTemperaments.map((temp) => (
-                  <option value={temp.Id} key={temp.Id}>
-                    {temp.Nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <span>{errors.temperaments}</span>
-          </div>
-        }
         <div className={Style.divInput}>
           <div className={Style.containerDiv}>
             <label htmlFor="image">Image: </label>
@@ -207,8 +190,7 @@ const Form = () => {
           )}
         </div>
         <div></div>
-        {JSON.stringify(form.temperaments) === JSON.stringify([]) &&
-        !form.image ? (
+        {!form.image ? (
           <div className={Style.containerTemperamentsNone}></div>
         ) : (
           <div>
@@ -218,17 +200,8 @@ const Form = () => {
 
         <button disabled={isSubmitDisabled}>Submit</button>
       </form>
-      <h2>Temperaments</h2>
-      {form.temperaments.map((element) => {
-        return (
-          <div>
-            <p>{getTemperamentName(element)}</p>
-            <button onClick={() => handleDelete(element)}>X</button>
-          </div>
-        );
-      })}
     </div>
   );
 };
 
-export default Form;
+export default FormUpdate;

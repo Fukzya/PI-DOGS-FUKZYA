@@ -23,6 +23,7 @@ export const getDogbyId = (id) => {
     dispatch({ type: "GET_DOGS_BY_ID", payload: dogId });
   };
 };
+
 export const findDogByName = (name) => {
   return async (dispatch) => {
     const res = await axios.get(`http://localhost:3001/dogs?name=${name}`);
@@ -30,8 +31,42 @@ export const findDogByName = (name) => {
   };
 };
 
+export const getDetailDog = (id) => {
+  return async function (dispatch) {
+    const response = (await axios.get(`http://localhost:3001/dogs/${id}`)).data;
+    return dispatch({ type: "GET_DETAIL_DOG", payload: response });
+  };
+};
+
+export const cleanCardDetail = () => {
+  return { type: "CLEAN_CARD_DETAIL" };
+};
+
 export const cleanDetail = () => {
   return { type: "CLEAN_DETAIL" };
+};
+
+export const deleteDog = (id) => {
+  return async function (dispatch) {
+    const response = (await axios.delete(`http://localhost:3001/dogs/${id}`))
+      .data;
+    return dispatch({ type: "DELETE_DOG", payload: response });
+  };
+};
+
+export const putDog = (id, payload) => {
+  console.log(id, payload);
+  return async function (dispatch) {
+    try {
+      const response = (
+        await axios.put(`http://localhost:3001/dogs/${id}`, payload)
+      ).data;
+      dispatch({ type: "PUT_DOG" });
+      return response;
+    } catch (error) {
+      alert(error.response.data.error);
+    }
+  };
 };
 
 export const setPage = (page) => ({

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { getTemperaments, setPage } from "../../redux/actions";
 import Pagination from "../Paginado/Paginado";
-import SearchBar from "../onSearch/onSearch";
+
 import Card from "../Card/Card";
 import style from "./CardsContainer.module.css";
 
@@ -101,7 +101,6 @@ export default function CardsContainer() {
   return (
     <div className={style.container}>
       <div className={style.filters}>
-        <SearchBar />
         <select onChange={handleOrderChange}>
           <option value="default">Default</option>
           <option value="A">A-Z Abc</option>
@@ -127,7 +126,7 @@ export default function CardsContainer() {
         )}
       </div>
 
-      <div className={style.cards}>
+      <div className={style.cardsCont}>
         {thisPageDogs && thisPageDogs.length > 0 ? (
           thisPageDogs.map((dog) => {
             return (

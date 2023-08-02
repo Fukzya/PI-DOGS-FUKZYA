@@ -1,0 +1,36 @@
+.shCont {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 16px;
+  border: #003064 solid 2px;
+}
+
+.shCont input {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 16px;
+  padding: 8px;
+}
+
+.shCont button {
+  margin-left: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.shCont button:hover {
+  background-color: #0056b3;
+}
+
+.shCont input:focus {
+  width: 250px; /* Adjust the width as needed */
+}
