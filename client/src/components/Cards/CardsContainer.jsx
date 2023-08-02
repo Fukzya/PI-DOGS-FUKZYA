@@ -9,15 +9,14 @@ import style from "./CardsContainer.module.css";
 
 export default function CardsContainer() {
   const temperaments = useSelector((state) => state.temperaments);
-  const Paginado = useSelector((state) => state.pagination);
+  const Paginado = useSelector((state) => state.pagination); //! Nos traemos nuestro estado de paginado
   const dog = useSelector((state) => state.dogs);
   const [selecTemperaments, setSelecTemperaments] = useState(""); //SE USA PARA EL FILTRO DE TEMPERAMENTOS
   const [dogOrigin, setDogOrigin] = useState(""); //SE USA PARA EL FILTRO DE CREACIONES
-  const [order, setOrder] = useState("");
+  const [order, setOrder] = useState(""); //SE USA PARA EL ORDENAMIENTO
   const dispatch = useDispatch();
 
   const { thisPage, itemsPerPage } = Paginado;
-  const { pathname } = useLocation();
 
   useEffect(() => {
     dispatch(getTemperaments());
@@ -61,14 +60,6 @@ export default function CardsContainer() {
         return 0;
     }
   });
-  const totalPages = Math.ceil(orderedDogs.length / itemsPerPage);
-  const startIndex = (thisPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const thisPageDogs = orderedDogs.slice(startIndex, endIndex);
-
-  const handlePageChange = (page) => {
-    dispatch(setPage(page));
-  };
 
   const handleChange = (event) => {
     setDogOrigin(event.target.value);
@@ -98,56 +89,75 @@ export default function CardsContainer() {
         break;
     }
   };
+
+  const totalPages = Math.ceil(orderedDogs.length / itemsPerPage); //! total de paginas redoneando hacia arriba
+  const startIndex = (thisPage - 1) * itemsPerPage; //! cada card tiene un index empezando por 0
+  const endIndex = startIndex + itemsPerPage; //! 8-16-24-32 etc
+  const thisPageDogs = orderedDogs.slice(startIndex, endIndex); //!recorta el aray de perros en la seccion que le pase
+
+  const handlePageChange = (page) => {
+    dispatch(setPage(page));
+  };
+
   return (
-    <div className={style.container}>
-      <div className={style.filters}>
-        <select onChange={handleOrderChange}>
-          <option value="default">Default</option>
-          <option value="A">A-Z Abc</option>
-          <option value="Z">Z-A Abc</option>
-          <option value="MAX">Max to Min Weight</option>
-          <option value="MIN">Min to Max Weight</option>
-        </select>
-        <select value={dogOrigin} onChange={handleChange}>
-          <option value="ALL">All</option>
-          <option value="API">Api</option>
-          <option value="DB">Created by User</option>
-        </select>
-
-        {temperaments && temperaments.length > 0 && (
-          <select value={selecTemperaments} onChange={handleChangeTemp}>
-            <option value="">All Temperaments</option>
-            {temperaments.map((temp) => (
-              <option value={temp.Nombre} key={temp.Nombre}>
-                {temp.Nombre}
-              </option>
-            ))}
+    <div>
+      <div className={style.container}>
+        <div className={style.selects}>
+          <select onChange={handleOrderChange} className={style.select}>
+            <option value="default">Default</option>
+            <option value="A">A-Z Abc</option>
+            <option value="Z">Z-A Abc</option>
+            <option value="MAX">Max to Min Weight</option>
+            <option value="MIN">Min to Max Weight</option>
           </select>
-        )}
-      </div>
+          <select
+            className={style.select}
+            value={dogOrigin}
+            onChange={handleChange}
+          >
+            <option value="ALL">All</option>
+            <option value="API">Api</option>
+            <option value="DB">Created by User</option>
+          </select>
 
-      <div className={style.cardsCont}>
-        {thisPageDogs && thisPageDogs.length > 0 ? (
-          thisPageDogs.map((dog) => {
-            return (
-              <Card
-                id={dog.Id}
-                key={dog.Id}
-                name={dog.name}
-                image={dog.image}
-                maxPeso={dog.max_weight}
-                minPeso={dog.min_weight}
-                Temperaments={dog.Temperaments}
-                fromApi={dog.fromApi ? true : false}
-              />
-            );
-          })
-        ) : (
-          <div>No dogs found.</div>
-        )}
-      </div>
+          {temperaments && temperaments.length > 0 && (
+            <select
+              className={style.select}
+              value={selecTemperaments}
+              onChange={handleChangeTemp}
+            >
+              <option value="">All Temperaments</option>
+              {temperaments.map((temp) => (
+                <option value={temp.Nombre} key={temp.Nombre}>
+                  {temp.Nombre}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
 
-      {!pathname.includes("detail") && (
+        <div className={style.containerCards}>
+          {thisPageDogs && thisPageDogs.length > 0 ? (
+            thisPageDogs.map((dog) => {
+              return (
+                <Card
+                  id={dog.Id}
+                  key={dog.Id}
+                  name={dog.name}
+                  image={dog.image}
+                  maxPeso={dog.max_weight}
+                  minPeso={dog.min_weight}
+                  Temperaments={dog.Temperaments}
+                  fromApi={dog.fromApi ? true : false}
+                />
+              );
+            })
+          ) : (
+            <div>No dogs found.</div>
+          )}
+        </div>
+      </div>
+      {
         <div className={style.pagination}>
           <Pagination
             thisPage={thisPage}
@@ -155,7 +165,7 @@ export default function CardsContainer() {
             pageChange={handlePageChange}
           />
         </div>
-      )}
+      }
     </div>
   );
 }

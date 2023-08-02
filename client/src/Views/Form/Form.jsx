@@ -2,17 +2,14 @@ import Style from "./Form.module.css";
 import validate from "./Validations";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getTemperaments, postDog, getDogs } from "../../redux/actions.js";
 
 const Form = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getTemperaments());
-  }, [dispatch]);
-
+  const navigate = useNavigate();
   const allTemperaments = useSelector((state) => state.temperaments);
-
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     name: "",
     max_height: "",
@@ -24,21 +21,27 @@ const Form = () => {
     image: "",
   });
 
+  useEffect(() => {
+    dispatch(getTemperaments());
+  }, [dispatch]);
+
+  const getTemperamentName = (id) => {
+    let temperament = allTemperaments.filter((temp) => temp.Id === id);
+    return temperament[0].Nombre;
+  };
+
   const handleDelete = (id) => {
     setForm({
       ...form,
       temperaments: form.temperaments.filter((temp) => temp !== id),
     });
-    console.log();
   };
 
-  const [errors, setErrors] = useState({});
   const isSubmitDisabled =
     Object.values(errors).some((error) => error !== "") ||
     Object.values(form).some(
       (value) => value === "" || form.temperaments.length === 0
     );
-  console.log(form);
 
   const changeHandler = (event) => {
     const property = event.target.name;
@@ -69,16 +72,14 @@ const Form = () => {
         temperaments: [],
         image: "",
       });
+      navigate("/home");
     } else {
       alert("Errors exist");
     }
   };
-  const getTemperamentName = (id) => {
-    let temperament = allTemperaments.filter((temp) => temp.Id === id);
-    return temperament[0].Nombre;
-  };
+
   return (
-    <div>
+    <div className={Style.formContainer}>
       <form onSubmit={SubmitHandler}>
         <h1>Create your breed dog</h1>
         <div className={Style.divInput}>
@@ -209,21 +210,32 @@ const Form = () => {
         <div></div>
         {JSON.stringify(form.temperaments) === JSON.stringify([]) &&
         !form.image ? (
-          <div className={Style.containerTemperamentsNone}></div>
+          <div></div>
         ) : (
-          <div>
-            <img src={form.image} alt={form.name} />
+          <div className={Style.imageContainer}>
+            <img
+              className={Style.imageInput}
+              src={form.image}
+              alt={form.name}
+            />
           </div>
         )}
 
-        <button disabled={isSubmitDisabled}>Submit</button>
+        <button className={Style.submitButton} disabled={isSubmitDisabled}>
+          Submit
+        </button>
       </form>
       <h2>Temperaments</h2>
       {form.temperaments.map((element) => {
         return (
-          <div>
-            <p>{getTemperamentName(element)}</p>
-            <button onClick={() => handleDelete(element)}>X</button>
+          <div className={Style.temperament}>
+            <p className={Style.temperament2}>{getTemperamentName(element)}</p>
+            <button
+              className={Style.deleteButton}
+              onClick={() => handleDelete(element)}
+            >
+              DELETE
+            </button>
           </div>
         );
       })}

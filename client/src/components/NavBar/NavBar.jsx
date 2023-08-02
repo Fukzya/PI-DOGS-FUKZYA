@@ -5,9 +5,11 @@ import SearchBar from "../onSearch/onSearch";
 const NavBar = () => {
   return (
     <div className={style.navCont}>
-      <Link to="/home">HOME</Link>
+      <div>
+        <Link to="/home">HOME</Link>
+        <Link to="/form">CREATE</Link>
+      </div>
       <SearchBar />
-      <Link to="/form">CREATE</Link>
     </div>
   );
 };

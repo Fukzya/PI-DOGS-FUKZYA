@@ -1,12 +1,40 @@
-.card {
-  width: 300px; /* Ancho máximo de la card */
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  overflow: hidden; /* Evita que la imagen sobresalga del contenedor */
+.cardContainer {
+  margin-top: 40px;
+  width: 100%;
+  max-width: 400px;
+  margin-left: 39%;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 30px;
+  background-color: #faedcd;
 }
 
 .imagen {
-  max-width: 100%; /* La imagen ocupará todo el ancho del contenedor sin excederlo */
-  height: auto; /* La altura se ajustará automáticamente para mantener la proporción */
-  display: block; /* Elimina el espacio adicional debajo de la imagen */
+  border-radius: 30px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-top: 1%;
+}
+.containerButtos {
+  display: flex;
+  justify-content: space-around;
+}
+.button1 {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.button2 {
+  padding: 10px 20px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
 }

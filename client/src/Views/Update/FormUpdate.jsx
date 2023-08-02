@@ -2,7 +2,7 @@ import Style from "./FormUpdate.module.css";
 import validate from "./Validations";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   getDogs,
   getDetailDog,
@@ -12,8 +12,19 @@ import {
 
 const FormUpdate = () => {
   const { id } = useParams();
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dog = useSelector((state) => state.detailDog);
+  const [errors, setErrors] = useState({});
+  const [form, setForm] = useState({
+    name: "",
+    max_height: "",
+    min_height: "",
+    max_weight: "",
+    min_weight: "",
+    life_span: "",
+    image: "",
+  });
 
   useEffect(() => {
     dispatch(getDetailDog(id));
@@ -22,7 +33,6 @@ const FormUpdate = () => {
     };
   }, [id, dispatch]);
 
-  const dog = useSelector((state) => state.detailDog);
   useEffect(() => {
     if (dog) {
       setForm({
@@ -48,18 +58,6 @@ const FormUpdate = () => {
     };
   }, [dog]);
 
-  const [form, setForm] = useState({
-    name: "",
-    max_height: "",
-    min_height: "",
-    max_weight: "",
-    min_weight: "",
-    life_span: "",
-    image: "",
-  });
-
-  const [errors, setErrors] = useState({});
-
   const isSubmitDisabled =
     Object.values(errors).some((error) => error !== "") ||
     Object.values(form).some((value) => value === "");
@@ -77,10 +75,11 @@ const FormUpdate = () => {
     dispatch(putDog(id, form));
     alert("the dog breed was updated successfully");
     dispatch(getDogs());
+    navigate("/home");
   };
 
   return (
-    <div>
+    <div className={Style.formContainer}>
       <form onSubmit={SubmitHandler}>
         <h1>Update your breed dog</h1>
         <div className={Style.divInput}>
@@ -194,11 +193,17 @@ const FormUpdate = () => {
           <div className={Style.containerTemperamentsNone}></div>
         ) : (
           <div>
-            <img src={form.image} alt={form.name} />
+            <img
+              className={Style.imageContainer}
+              src={form.image}
+              alt={form.name}
+            />
           </div>
         )}
 
-        <button disabled={isSubmitDisabled}>Submit</button>
+        <button className={Style.submitButton} disabled={isSubmitDisabled}>
+          UPDATE
+        </button>
       </form>
     </div>
   );

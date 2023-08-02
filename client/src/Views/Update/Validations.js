@@ -2,8 +2,8 @@ const validate = (dogData) => {
   const errors = {};
 
   if (dogData.name) {
-    if (!/^[a-z]+$/.test(dogData.name))
-      errors.name = "Writing lowercase letters";
+    if (!/^[A-Za-z\s]+$/.test(dogData.name))
+      errors.name = "Writing letters and spaces only";
     else errors.name = "";
   } else {
     if (!dogData.name) errors.name = "The name of the dog cannot be null";

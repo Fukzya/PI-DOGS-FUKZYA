@@ -33,7 +33,7 @@ const Details = () => {
 
   let dogId = useSelector((state) => state.dogId);
   return (
-    <div className={styles.card}>
+    <div className={styles.cardContainer}>
       <img className={styles.imagen} src={dogId.image} alt={"img"}></img>
       <h2>Name: {dogId.name}</h2>
       <h2>Id: {dogId.Id}</h2>
@@ -50,9 +50,9 @@ const Details = () => {
       ) : (
         <div className={styles.containerButtos}>
           <Link to={`/formUpdate/${id}`}>
-            <button className={styles.button}>Update</button>
+            <button className={styles.button1}>Update</button>
           </Link>
-          <button className={styles.button} onClick={handleDelete}>
+          <button className={styles.button2} onClick={handleDelete}>
             Delete
           </button>
         </div>

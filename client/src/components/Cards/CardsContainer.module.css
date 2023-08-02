@@ -1,6 +1,99 @@
-.cardsCont {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  margin: 0 auto;
-  row-gap: 30px;
+.container {
+  display: flex;
+  flex-direction: row;
+}
+.containerCards {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  text-decoration: none;
+  color: #000;
+}
+.selects {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1%;
+}
+select {
+  flex-direction: column;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  appearance: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container select {
+  margin: 10px 20px;
+}
+select::after {
+  content: "\f078";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+select option {
+  padding: 8px;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 4px #007bff;
+}
+
+select option:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+select option:checked {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.selectOptionsContainer {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.selectContainer:hover .selectOptionsContainer,
+.selectContainer:focus-within .selectOptionsContainer {
+  display: block;
 }

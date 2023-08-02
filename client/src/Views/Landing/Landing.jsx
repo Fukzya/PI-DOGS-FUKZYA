@@ -6,7 +6,7 @@ const Landing = () => {
       <div className={style.containerButton}>
         <h1 className={style.text}>Welcome to dog web</h1>
         <Link to={"home"}>
-          <button className={style.buttonLanding}>🐶 Log in 🦴</button>
+          <button className={style.buttonLanding}>🐶 Find Your Buddy 🦴</button>
         </Link>
       </div>
     </div>
