@@ -3,6 +3,7 @@ import {
   GET_TEMPERAMENTS,
   GET_DOGS,
   GET_DETAIL_DOG,
+  FILTERS_DATA,
   GET_DOGS_BY_ID,
   FIND_DOG_BY_NAME,
   CLEAN_CARD_DETAIL,
@@ -11,12 +12,38 @@ import {
   PUT_DOG,
   SET_PAGE,
   POST_DOG,
+  SELECTED_TEMPS,
+  DOG_ORIGIN,
+  ORDER,
+  CLEAN_FILTERS,
 } from "./action-types";
+
 export const getDogs = () => {
   return async function (dispatch) {
     const res = await axios.get("http://localhost:3001/dogs");
     const dogs = res.data;
     dispatch({ type: GET_DOGS, payload: dogs });
+  };
+};
+
+export const filtersData = (data) => {
+  return async function (dispatch) {
+    dispatch({ type: FILTERS_DATA, payload: data });
+  };
+};
+export const selectedTemperaments = (data) => {
+  return async function (dispatch) {
+    dispatch({ type: SELECTED_TEMPS, payload: data });
+  };
+};
+export const selectedOrigin = (data) => {
+  return async function (dispatch) {
+    dispatch({ type: DOG_ORIGIN, payload: data });
+  };
+};
+export const selectedOrder = (data) => {
+  return async function (dispatch) {
+    dispatch({ type: ORDER, payload: data });
   };
 };
 
@@ -61,6 +88,9 @@ export const cleanCardDetail = () => {
 export const cleanDetail = () => {
   return { type: CLEAN_DETAIL };
 };
+export const cleanFilters = () => {
+  return { type: CLEAN_FILTERS };
+};
 
 export const deleteDog = (id) => {
   return async function (dispatch) {
@@ -80,7 +110,11 @@ export const putDog = (id, payload) => {
       dispatch({ type: PUT_DOG });
       return response;
     } catch (error) {
-      alert(error.response.data.error);
+      if (error.response) {
+        alert(error.response.data.error);
+      } else {
+        alert("The dog has not been Updated.");
+      }
     }
   };
 };
@@ -90,33 +124,21 @@ export const setPage = (page) => ({
   payload: page,
 });
 
-export const postDog = ({
-  name,
-  max_height,
-  min_height,
-  max_weight,
-  min_weight,
-  life_span,
-  temperaments,
-  image,
-}) => {
+export const postDog = (props) => {
   return async function (dispatch) {
     try {
-      console.log(temperaments);
       const response = await axios.post("http://localhost:3001/dogs", {
-        name,
-        max_height,
-        min_height,
-        max_weight,
-        min_weight,
-        life_span,
-        image,
-        temperaments,
+        ...props,
       });
+      alert("the dog breed was created successfully");
       dispatch({ type: POST_DOG, payload: response.data });
       return response;
     } catch (error) {
-      alert(error.response.data.error);
+      if (error.response) {
+        alert(error.response.data.error);
+      } else {
+        alert("The dog has not been created.");
+      }
     }
   };
 };

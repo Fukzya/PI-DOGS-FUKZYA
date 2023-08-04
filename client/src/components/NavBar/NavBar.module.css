@@ -10,7 +10,6 @@
 /* General styles for the links */
 .navCont a {
   text-decoration: none;
-  color: #333;
   font-weight: bold;
   padding: 8px 16px;
   border-radius: 4px;
@@ -28,6 +27,12 @@
 .navCont a:last-child {
   background-color: #007bff;
   color: #fff;
+  margin-right: 10px;
+}
+.childi {
+  background-color: #007bff;
+  color: #ffffff;
+  margin-right: 10px;
 }
 
 /* Hover effect for both links */

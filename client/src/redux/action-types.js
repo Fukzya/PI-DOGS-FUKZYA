@@ -1,6 +1,7 @@
 export const GET_TEMPERAMENTS = "GET_TEMPERAMENTS";
 export const GET_DOGS = "GET_DOGS";
 export const GET_DOGS_BY_ID = "GET_DOGS_BY_ID";
+export const FILTERS_DATA = "FILTERS_DATA";
 export const FIND_DOG_BY_NAME = "FIND_DOG_BY_NAME";
 export const GET_DETAIL_DOG = "GET_DETAIL_DOG";
 export const CLEAN_CARD_DETAIL = "CLEAN_CARD_DETAIL";
@@ -9,3 +10,7 @@ export const DELETE_DOG = "DELETE_DOG";
 export const PUT_DOG = "PUT_DOG";
 export const SET_PAGE = "SET_PAGE";
 export const POST_DOG = "POST_DOG";
+export const SELECTED_TEMPS = "SELECTED_TEMPS";
+export const DOG_ORIGIN = "DOG_ORIGIN";
+export const ORDER = "ORDER";
+export const CLEAN_FILTERS = "CLEAN_FILTERS";

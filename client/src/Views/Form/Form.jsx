@@ -49,6 +49,7 @@ const Form = () => {
     setForm({ ...form, [property]: value });
     setErrors(validate({ ...form, [property]: value }));
   };
+
   const changeSelectHandler = (event) => {
     const value = Number(event.target.value);
     if (!form.temperaments.includes(value)) {
@@ -60,7 +61,6 @@ const Form = () => {
     event.preventDefault();
     if (!errors.name) {
       dispatch(postDog(form));
-      alert("the dog breed was created successfully");
       dispatch(getDogs());
       setForm({
         name: "",
